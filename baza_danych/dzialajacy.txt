@@ -1,0 +1,294 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <windows.h>
+
+using namespace std;
+
+struct strk
+{
+ int id;
+ string gwiazdka;
+ string marka;
+ string model;
+ string kolor;
+ string fabryka; //z jakiej fabryki
+ string rejestracja; //rejestracja pojazdu
+ string wlasciciel; //imie i nazwisko wlasciciela
+
+ //char nazwisko[20];//nazwisko wlasciciela
+ //char imie[20];//imie wlasciciela
+
+ bool rodzaj; //1-sedan 0-hatchback
+
+ int rok; //rok produkcji
+ int nr_ser; //numer seryjny
+ int nr_vin;
+ int moc; //Konie mechaniczne
+ int pesel; // numer pesel wlasciciela
+ int max_v;//max predkosc
+
+
+ float spalanie; //na 100 km
+ float pojemnosc;// pojemnosc silnika
+
+
+
+
+};
+
+void wys_menu()
+{
+  cout<<"MENU"<<endl<<"1.Wyswietl"<<endl<<"2.Edytuj"<<endl<<"3.Dodaj"<<endl<<"4.Sciezka"<<endl<<"5.Kolorystyka"<<endl<<"6.Wyjdz"<<endl<<"_>";
+}
+
+void nowy(strk *wsk,int rekordy)
+{
+        int wielkosc=rekordy+1;
+        strk *wsk_2 = new strk[wielkosc];
+        for(int i=0;i<rekordy;i++)
+        {
+        (wsk_2+i)->id=(wsk+i)->id;
+        (wsk_2+i)->marka=(wsk+i)->marka;
+        (wsk_2+i)->model=(wsk+i)->model;
+        (wsk_2+i)->kolor=(wsk+i)->kolor;
+        (wsk_2+i)->fabryka=(wsk+i)->fabryka;
+        (wsk_2+i)->rejestracja=(wsk+i)->rejestracja;
+        (wsk_2+i)->wlasciciel=(wsk+i)->wlasciciel;
+        (wsk_2+i)->rodzaj=(wsk+i)->rodzaj;
+        (wsk_2+i)->rok=(wsk+i)->rok;
+        (wsk_2+i)->nr_ser=(wsk+i)->nr_ser;
+        (wsk_2+i)->nr_vin=(wsk+i)->nr_vin;
+        (wsk_2+i)->moc=(wsk+i)->moc;
+        (wsk_2+i)->pesel=(wsk+i)->pesel;
+        (wsk_2+i)->max_v=(wsk+i)->max_v;
+        (wsk_2+i)->spalanie=(wsk+i)->spalanie;
+        (wsk_2+i)->pojemnosc=(wsk+i)->pojemnosc;
+        (wsk_2+i)->gwiazdka=(wsk+i)->gwiazdka;
+
+        }
+
+};
+void wyswietl_cala_baze(strk *wsk,int rekordy)
+{
+        for(int i=0;i<rekordy;i++)
+        {
+        cout<<"Prosze wpisac Id: "<<(wsk+i)->id<<endl;
+        cout<<"Prosze wpisac marke: "<<(wsk+i)->marka<<endl;
+        cout<<"Prosze wpisac model: "<<(wsk+i)->model<<endl;
+        cout<<"Prosze wpisac kolor: "<<(wsk+i)->kolor<<endl;
+        cout<<"Prosze wpisac fabryke: "<<(wsk+i)->fabryka<<endl;
+        cout<<"Prosze wpisac rejestracje: "<<(wsk+i)->rejestracja<<endl;
+        cout<<"Prosze wpisac imie i nazwisko wlasciciela: "<<(wsk+i)->wlasciciel<<endl;
+        cout<<"Prosze wpisac rodzaj: "<<(wsk+i)->rodzaj<<endl;
+        cout<<"Prosze wpisac rok produkcji: "<<(wsk+i)->rok<<endl;
+        cout<<"Prosze wpisac numer seryjny: "<<(wsk+i)->nr_ser<<endl;
+        cout<<"Prosze wpisac numer vin: "<<(wsk+i)->nr_vin<<endl;
+        cout<<"Prosze podac moc[kM]: "<<(wsk+i)->moc<<endl;
+        cout<<"Prosze wpisac PESEL wlasciciela: "<<(wsk+i)->pesel<<endl;
+        cout<<"Prosze wpisac predkosc maksymalna: "<<(wsk+i)->max_v<<endl;
+        cout<<"Prosze podac spalanie[L/100km]: "<<(wsk+i)->spalanie<<endl;
+        cout<<"Prosze podac pojemosc silnika: "<<(wsk+i)->pojemnosc<<endl;
+
+        }
+
+
+}
+
+void wyswietl_sciezke()
+{
+
+};
+void edytuj_sciezke()
+{
+
+};
+void zmien_nazwe_pliku()
+{
+
+};
+void zliczanie(int &rekordy,int &ilosc_wierszy) //funkcja do zliczania rekordow za pomoca zliczania gwiazdek i ilosci wierszy w pliku
+{
+    string b;
+    ifstream pomoc;
+    pomoc.open("baza.txt");
+    while(true)
+    {
+        pomoc>>b;
+        if(b=="*")
+        {
+            rekordy++;
+        }
+        if(pomoc.eof())
+        {
+            break;
+        }
+
+        ilosc_wierszy++;
+
+    }
+
+};
+void wczytywanie(ifstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
+{
+        plik.open( "baza.txt" );
+
+        int rekordy=0,ilosc_wierszy=1;
+        zliczanie(rekordy,ilosc_wierszy);
+
+        for(int i=0;i<rekordy;i++)
+        {
+
+        plik>>(wsk+i)->id;
+        plik>>(wsk+i)->marka;
+        plik>>(wsk+i)->model;
+        plik>>(wsk+i)->kolor;
+        plik>>(wsk+i)->fabryka;
+        plik>>(wsk+i)->rejestracja;
+        plik>>(wsk+i)->wlasciciel;
+        plik>>(wsk+i)->rodzaj;
+        plik>>(wsk+i)->rok;
+        plik>>(wsk+i)->nr_ser;
+        plik>>(wsk+i)->nr_vin;
+        plik>>(wsk+i)->moc;
+        plik>>(wsk+i)->pesel;
+        plik>>(wsk+i)->max_v;
+        plik>>(wsk+i)->spalanie;
+        plik>>(wsk+i)->pojemnosc;
+        plik>>(wsk+i)->gwiazdka;
+
+        }
+
+  cout<<"Ilosc wczytanych rekordow: "<<rekordy<<endl<<"Ilosc wierszy w pliku: "<<ilosc_wierszy<<endl;
+};
+
+int main()
+{
+    /////////////////////////////////////////////// bajery
+    system("title Baza danych Michal Zembik 210203");
+    system("color 12");
+    ////////////////////////////////////////////// Zliczanie rekordow i ilosci wierszy w pliku
+    int rekordy=0,ilosc_wierszy=1;
+    zliczanie(rekordy,ilosc_wierszy);
+
+    ////////////////////////////////////////////// Wczytywanie bazy do programu
+    ifstream plik;
+    int wielkosc_tab=rekordy;
+    strk *wsk = new strk[wielkosc_tab];
+
+    wielkosc_tab--;
+    wczytywanie(plik,wsk);
+    ////////////////////////////////////////////// Zmienne do obslugi menu i petli
+    bool wyjscie=true;
+    int wybor;
+    //////////////////////////////////////////////
+    while(wyjscie)
+    {
+
+        wys_menu();
+        cin>>wybor;
+        switch(wybor)
+        {
+        case 1: //Wyswietl
+            cin>>wybor;
+            switch(wybor)
+            {
+            case 1: //Wyswietl->calabaze
+                wyswietl_cala_baze(wsk,rekordy);
+                break;
+            case 2: //Wyswietl->szukaj wd danej
+                break;
+            case 3: //Wyswietl->szukaj wd warunku
+                cin>>wybor;
+                switch(wybor)
+                {
+                case 1: //Wyswietl->szukaj wd warunku->rocznik
+                    break;
+                case 2: //Wyswietl->szukaj wd warunku->pojemnosc
+                    break;
+                case 3: //Wyswietl->szukaj wd warunku->spalanie
+                    break;
+                case 4: //Wyswietl->szukaj wd warunku->max_predkosc
+                    break;
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+
+            }
+            break;
+        case 2: // Edytuj
+            cin>>wybor;
+            switch(wybor)
+            {
+            case 1: //Edytuj->zapisz
+                break;
+            case 2: //Edytuj->zmien_wybrana_dana
+                break;
+            case 3: //Edytuj->kasuj
+                break;
+            case 4: //Edytuj->wczytaj
+                break;
+            default:
+                break;
+
+            }
+            break;
+        case 3: //Dodaj
+            nowy(wsk,rekordy);
+            wczytywanie(plik,wsk);
+            break;
+        case 4: //Sciezka
+            cin>>wybor;
+            switch(wybor)
+            {
+            case 1: //Sciezka->zmiana sciezki
+                edytuj_sciezke();
+                break;
+            case 2: //Sciezka->zmiana nazwy pliku z baza
+                zmien_nazwe_pliku();
+                break;
+            case 3: //Sciezka->wyswietl sciezke do bazy
+                wyswietl_sciezke();
+                break;
+            default:
+                break;
+            }
+            break;
+        case 5: //KOlory
+            cin>>wybor;
+            switch(wybor)
+            {
+            case 1: //KOlory->czcionka
+                break;
+            case 2: //kolory->tlo
+                break;
+            default:
+                break;
+            }
+            break;
+        case 6: // wyjscie
+            char xx;
+            cout<<"Czy napewno chcesz wyjsc? T/N: ";
+            cin>>xx;
+            if(xx=='T' || xx=='t')
+            {
+                cout<<"Zamykam program \n";
+                wyjscie=false;
+            }
+            else
+            {
+                cout<<"Kontynuacja programu..."<<endl;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+
+
+    return 0;
+}
