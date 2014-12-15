@@ -82,7 +82,7 @@ void nowy(strk *wsk,strk *wsk_2,int rekordy,fstream &plik)
  cout<<"Podaj pojemnosc: ";
  cin>>pojemnosc;
 
-
+        plik.open("baza.txt");
         plik.seekg( 0, std::ios::end );
         plik << endl;
         plik << id <<endl;
@@ -129,7 +129,7 @@ void nowy(strk *wsk,strk *wsk_2,int rekordy,fstream &plik)
 };
 void wyswietl_cala_baze(strk *wsk,int rekordy)
 {
-        for(int i=0;i<=rekordy;i++)
+        for(int i=0;i<rekordy;i++)
         {
         cout<<"Id: "<<(wsk+i)->id<<endl;
         cout<<"Marka: "<<(wsk+i)->marka<<endl;
@@ -192,10 +192,12 @@ void wczytywanie(fstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
 {
         plik.open( "baza.txt" );
 
-        int rekordy=0,ilosc_wierszy=1;
+        int rekordy=0,ilosc_wierszy=1,tab;
         zliczanie(rekordy,ilosc_wierszy);
+        tab=rekordy;
+        rekordy--;
 
-        for(int i=0;i<rekordy;i++)
+        for(int i=0;i<=rekordy;i++)
         {
 
         plik>>(wsk+i)->id;
@@ -218,7 +220,7 @@ void wczytywanie(fstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
 
         }
    plik.close();
-  cout<<"Ilosc wczytanych rekordow: "<<rekordy<<endl<<"Ilosc wierszy w pliku: "<<ilosc_wierszy<<endl;
+  cout<<"Ilosc wczytanych rekordow: "<<tab<<endl<<"Ilosc wierszy w pliku: "<<ilosc_wierszy<<endl;
 };
 
 int main()
@@ -229,14 +231,13 @@ int main()
     ////////////////////////////////////////////// Zliczanie rekordow i ilosci wierszy w pliku
     int rekordy=0,ilosc_wierszy=1;
     zliczanie(rekordy,ilosc_wierszy);
-
     ////////////////////////////////////////////// Wczytywanie bazy do programu
     fstream plik;
     int wielkosc_tab=rekordy;
     strk *wsk = new strk[wielkosc_tab];
     strk *wsk_2 = new strk[wielkosc_tab+1];
 
-    wielkosc_tab--;
+    //wielkosc_tab--;
     wczytywanie(plik,wsk);
     ////////////////////////////////////////////// Zmienne do obslugi menu i petli
     bool wyjscie=true;
