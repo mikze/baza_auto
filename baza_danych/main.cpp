@@ -41,8 +41,32 @@ void wys_menu()
 {
   cout<<"MENU"<<endl<<"1.Wyswietl"<<endl<<"2.Edytuj"<<endl<<"3.Dodaj"<<endl<<"4.Sciezka"<<endl<<"5.Kolorystyka"<<endl<<"6.Wyjdz"<<endl<<"_>";
 }
+void zliczanie(int &rekordy,int &ilosc_wierszy,int &ilosc_znakow) //funkcja do zliczania rekordow za pomoca zliczania gwiazdek i ilosci wierszy w pliku
+{
+    string b;
+    ifstream pomoc;
+    pomoc.open("baza.txt");
+    while(true)
+    {
+        pomoc>>b;
+        if(b=="*")
+        {
+            rekordy++;
+        }
+        if(pomoc.eof())
+        {
+            break;
+        }
 
-void nowy(strk *wsk,strk *wsk_2,int rekordy,fstream &plik)
+        ilosc_wierszy++;
+
+    }
+
+    ilosc_znakow = pomoc.tellg();
+    pomoc.close();
+
+};
+void nowy(strk *wsk,strk *wsk_2,fstream &plik)
 {
  string marka,model,kolor,fabryka,rejestracja,wlasciciel;
  char gwiazdka='*';
@@ -104,7 +128,11 @@ void nowy(strk *wsk,strk *wsk_2,int rekordy,fstream &plik)
         plik << gwiazdka;
         plik.close();
 
-       /* for(int i=0;i<rekordy;i++)
+        int rekordy=0,ilosc_wierszy=1,ilosc_znakow=0;
+        zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
+
+        cout<<"Zaczynam kopiowanie"<<endl;
+        for(int i=0;i<rekordy-1;i++)
         {
         (wsk_2+i)->id=(wsk+i)->id;
         (wsk_2+i)->marka=(wsk+i)->marka;
@@ -124,7 +152,34 @@ void nowy(strk *wsk,strk *wsk_2,int rekordy,fstream &plik)
         (wsk_2+i)->pojemnosc=(wsk+i)->pojemnosc;
         (wsk_2+i)->gwiazdka=(wsk+i)->gwiazdka;
 
-        }*/
+        }
+        cout<<"Koncze kopiowanie"<<endl;
+
+
+        cout<<"Zaczynam dopisywanie "<<endl;
+        (wsk_2+rekordy-1)->id=id;
+        cout<<"id.."<<endl;
+        (wsk_2+rekordy-1)->marka=marka;
+        cout<<"marka.."<<endl;
+        (wsk_2+rekordy-1)->model=model;
+        (wsk_2+rekordy-1)->kolor=kolor;
+        (wsk_2+rekordy-1)->fabryka=fabryka;
+        (wsk_2+rekordy-1)->rejestracja=rejestracja;
+        (wsk_2+rekordy-1)->wlasciciel=wlasciciel;
+        (wsk_2+rekordy-1)->rodzaj=rodzaj;
+        (wsk_2+rekordy-1)->rok=rok;
+        (wsk_2+rekordy-1)->nr_ser=nr_ser;
+        (wsk_2+rekordy-1)->nr_vin=nr_vin;
+        (wsk_2+rekordy-1)->moc=moc;
+        (wsk_2+rekordy-1)->pesel=pesel;
+        (wsk_2+rekordy-1)->max_v=max_v;
+        (wsk_2+rekordy-1)->spalanie=spalanie;
+        cout<<"spalanie.."<<endl;
+        (wsk_2+rekordy-1)->pojemnosc=pojemnosc;
+        cout<<"pojemnosc.."<<endl;
+        (wsk_2+rekordy-1)->gwiazdka=gwiazdka;
+        cout<<"koncze dopisywanie"<<endl;
+
 
 };
 void wyswietl_cala_baze(strk *wsk,int rekordy)
@@ -166,38 +221,17 @@ void zmien_nazwe_pliku()
 {
 
 };
-void zliczanie(int &rekordy,int &ilosc_wierszy) //funkcja do zliczania rekordow za pomoca zliczania gwiazdek i ilosci wierszy w pliku
-{
-    string b;
-    ifstream pomoc;
-    pomoc.open("baza.txt");
-    while(true)
-    {
-        pomoc>>b;
-        if(b=="*")
-        {
-            rekordy++;
-        }
-        if(pomoc.eof())
-        {
-            break;
-        }
 
-        ilosc_wierszy++;
-
-    }
-
-};
 void wczytywanie(fstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
 {
         plik.open( "baza.txt" );
 
-        int rekordy=0,ilosc_wierszy=1,tab;
-        zliczanie(rekordy,ilosc_wierszy);
-        tab=rekordy;
-        rekordy--;
+        int rekordy=0,ilosc_wierszy=1,ilosc_znakow=0;
+        zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
 
-        for(int i=0;i<=rekordy;i++)
+
+
+        for(int i=0;i<rekordy;i++)
         {
 
         plik>>(wsk+i)->id;
@@ -220,7 +254,38 @@ void wczytywanie(fstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
 
         }
    plik.close();
-  cout<<"Ilosc wczytanych rekordow: "<<tab<<endl<<"Ilosc wierszy w pliku: "<<ilosc_wierszy<<endl;
+  cout<<"Ilosc wczytanych rekordow: "<<rekordy<<endl<<"Ilosc wierszy w pliku: "<<ilosc_wierszy<<endl<<"Ilosc znakow w pliku: "<<ilosc_znakow<<endl;
+};
+
+void kopiowanie(strk *wsk,strk *wsk_2)
+{
+    cout<<"Wlaczam funkcje kopiowanie"<<endl;
+    int rekordy=0,ilosc_wierszy=1,ilosc_znakow=0;
+    zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
+
+    for(int i=0;i<rekordy;i++)
+    {
+        (wsk+i)->id=(wsk_2+i)->id;
+        (wsk+i)->marka=(wsk_2+i)->marka;
+        (wsk+i)->model= (wsk_2+i)->model;
+        (wsk+i)->kolor=(wsk_2+i)->kolor;
+        (wsk+i)->fabryka=(wsk_2+i)->fabryka;
+        (wsk+i)->rejestracja=(wsk_2+i)->rejestracja;
+        (wsk+i)->wlasciciel=(wsk_2+i)->wlasciciel;
+        (wsk+i)->rodzaj=(wsk_2+i)->rodzaj;
+        (wsk+i)->rok=(wsk_2+i)->rok;
+        (wsk+i)->nr_ser=(wsk_2+i)->nr_ser;
+        (wsk+i)->nr_vin=(wsk_2+i)->nr_vin;
+        (wsk+i)->moc=(wsk_2+i)->moc;
+        (wsk+i)->pesel=(wsk_2+i)->pesel;
+        (wsk+i)->max_v=(wsk_2+i)->max_v;
+        (wsk+i)->spalanie=(wsk_2+i)->spalanie;
+        (wsk+i)->pojemnosc=(wsk_2+i)->pojemnosc;
+        (wsk+i)->gwiazdka=(wsk_2+i)->gwiazdka;
+
+    }
+
+
 };
 
 int main()
@@ -228,9 +293,10 @@ int main()
     /////////////////////////////////////////////// bajery
     system("title Baza danych Michal Zembik 210203");
     system("color 12");
+    system("mode 150");
     ////////////////////////////////////////////// Zliczanie rekordow i ilosci wierszy w pliku
-    int rekordy=0,ilosc_wierszy=1;
-    zliczanie(rekordy,ilosc_wierszy);
+    int rekordy=0,ilosc_wierszy=1,ilosc_znakow=0;
+    zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
     ////////////////////////////////////////////// Wczytywanie bazy do programu
     fstream plik;
     int wielkosc_tab=rekordy;
@@ -299,13 +365,16 @@ int main()
             break;
         case 3: //Dodaj
 
-            nowy(wsk,wsk_2,rekordy,plik);
+            nowy(wsk,wsk_2,plik);
             wielkosc_tab++;
             delete [] wsk;
             wsk = new strk[wielkosc_tab];
             if(wsk==NULL)
                 cout<<"Blad wskaznika ;/ "<<endl;
-            wczytywanie(plik,wsk);
+
+            kopiowanie(wsk,wsk_2);
+            delete [] wsk_2;
+            wsk_2 = new strk[wielkosc_tab+1];
             break;
         case 4: //Sciezka
             cin>>wybor;
