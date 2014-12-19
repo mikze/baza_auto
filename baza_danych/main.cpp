@@ -202,9 +202,9 @@ void wyswietl_cala_baze(strk *wsk,int rekordy)
 
 }
 
-void wyswietl_sciezke()
+void wyswietl_sciezke(char const *nazwa_pliku)
 {
-
+    cout<<"Nazwa pliku to: "<<nazwa_pliku<<endl;
 };
 void edytuj_sciezke()
 {
@@ -215,9 +215,9 @@ void zmien_nazwe_pliku()
 
 };
 
-void wczytywanie(fstream &plik, strk *wsk)  // FUNKCJA DO WCZYTYWANIA BAZY
+void wczytywanie(fstream &plik, strk *wsk,const char *nazwa_pliku)  // FUNKCJA DO WCZYTYWANIA BAZY
 {
-        plik.open( "baza.txt" );
+        plik.open( nazwa_pliku );
 
         int rekordy=0,ilosc_wierszy=1,ilosc_znakow=0;
         zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
@@ -285,6 +285,182 @@ void colorr(char &a,char &b)
     char color[9]={'c','o','l','o','r',' ',a,b,NULL};
     system(color);
 };
+void szukaj_wd_danej(int jaka,strk *wsk) //Szukaj wedlug 1-Id 2-Marki 3-Modelu 4-Rocznika 5-Mocy 6-Koloru
+{
+     int ile=0,n=0;
+     string markaa;
+     string modell;
+     string kolorr;
+     int mocc;
+     int rokk;
+     int idd;
+
+
+    int rekordy=0,wiersze=1,znaki=0;
+    zliczanie(rekordy,wiersze,znaki);
+    int jakie_id[rekordy];
+
+    switch(jaka)
+    {
+case 1:
+
+    cout<<"Podaj id: ";
+    cin>>idd;
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->id==idd)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" modelow somochodow "<<idd<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+
+    system("pause");
+    system("cls");
+
+    break;
+
+case 2:
+
+
+
+    cout<<"Podaj model: ";
+    cin>>markaa;
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->marka==markaa)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" marek somochodow "<<markaa<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+
+    system("pause");
+    system("cls");
+
+    break;
+
+case 3:
+
+
+    cout<<"Podaj model: ";
+    cin>>modell;
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->model==modell)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" modelow somochodow "<<modell<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+
+    system("pause");
+    system("cls");
+
+    break;
+
+  case 4:
+
+    cout<<"Podaj rocznik: ";
+    cin>>rokk;
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->rok==rokk)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" samochodow z rocznika "<<rokk<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+    system("pause");
+    system("cls");
+
+    break;
+
+case 5:   //
+    cout<<"Podaj moc[kM]: ";
+    cin>>mocc;
+
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->moc==mocc)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" samochodow o mocy[kM] "<<mocc<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+    system("pause");
+    system("cls");
+
+    break;
+case 6:
+
+    cout<<"Podaj kolor: ";
+    cin>>kolorr;
+    for(int i=0;i<rekordy;i++)
+    {
+        if((wsk+i)->kolor==kolorr)
+        {
+            ile++;
+            jakie_id[n]=(wsk+i)->id;
+            n++;
+        }
+
+    }
+    cout<<"Jest "<<ile<<" samochodow o kolorze "<<kolorr<<endl;
+    cout<<"Ich Id to: ";
+    for(int i=0;i<ile;i++)
+    {
+        cout<<jakie_id[i]<<", ";
+    }
+    system("pause");
+    system("cls");
+
+    break;
+
+
+    }
+
+};
 
 int main()
 {
@@ -297,18 +473,23 @@ int main()
     zliczanie(rekordy,ilosc_wierszy,ilosc_znakow);
     ////////////////////////////////////////////// Wczytywanie bazy do programu
     fstream plik;
+
+    char nazwa_plikku[9]={'b','a','z','a','.','t','x','t',NULL};
+    char *nazwa_pliku=&nazwa_plikku[0];
+
     int wielkosc_tab=rekordy;
     strk *wsk = new strk[wielkosc_tab];
     strk *wsk_2 = new strk[wielkosc_tab+1];
 
     //wielkosc_tab--;
-    wczytywanie(plik,wsk);
+    wczytywanie(plik,wsk,nazwa_pliku);
     ////////////////////////////////////////////// Zmienne do obslugi menu i petli
     bool wyjscie=true;
     int wybor;
     //////////////////////////////////////////////
     while(wyjscie)
     {
+
         ////////////// Ustawienie koloru
         char color[9]={'c','o','l','o','r',' ',a,b,NULL};
         system(color);
@@ -326,6 +507,31 @@ int main()
                 wyswietl_cala_baze(wsk,wielkosc_tab);
                 break;
             case 2: //Wyswietl->szukaj wd danej
+                cout<<"Szukaj wedlug 1-Id 2-Marki 3-Modelu 4-Rocznika 5-Mocy 6-Koloru: ";
+                cin>>wybor;
+                switch(wybor)
+                {
+                case 1:
+                    szukaj_wd_danej(1,wsk);
+                    break;
+                case 2:
+                    szukaj_wd_danej(2,wsk);
+                    break;
+                case 3:
+                    szukaj_wd_danej(3,wsk);
+                    break;
+                case 4:
+                    szukaj_wd_danej(4,wsk);
+                    break;
+                case 5:
+                    szukaj_wd_danej(5,wsk);
+                    break;
+                case 6:
+                    szukaj_wd_danej(6,wsk);
+                    break;
+                default:
+                    break;
+                }
                 break;
             case 3: //Wyswietl->szukaj wd warunku
                 cin>>wybor;
@@ -389,7 +595,7 @@ int main()
                 zmien_nazwe_pliku();
                 break;
             case 3: //Sciezka->wyswietl sciezke do bazy
-                wyswietl_sciezke();
+                wyswietl_sciezke(nazwa_pliku);
                 break;
             default:
                 break;
