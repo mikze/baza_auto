@@ -32,7 +32,7 @@ struct strk
  float spalanie; //na 100 km
  float pojemnosc;// pojemnosc silnika
 
-
+ bool kasowanie=0; //czy jest skasowany
 
 
 };
@@ -70,6 +70,7 @@ void nowy(strk *wsk,strk *wsk_2,fstream &plik)
 {
  string marka,model,kolor,fabryka,rejestracja,wlasciciel;
  char gwiazdka='*';
+ bool kasowanie=0;
  bool rodzaj;
  int rok,nr_ser,nr_vin,moc,pesel,max_v,id;
  float spalanie,pojemnosc;
@@ -125,6 +126,7 @@ void nowy(strk *wsk,strk *wsk_2,fstream &plik)
         plik << max_v<<endl;
         plik << spalanie<<endl;
         plik << pojemnosc<<endl;
+        plik << kasowanie<<endl;
         plik << gwiazdka;
         plik.close();
 
@@ -179,6 +181,9 @@ void wyswietl_cala_baze(strk *wsk,int rekordy)
 {
         for(int i=0;i<rekordy;i++)
         {
+            if((wsk+i)->kasowanie==true)
+                continue;
+
         cout<<"Id: "<<(wsk+i)->id<<endl;
         cout<<"Marka: "<<(wsk+i)->marka<<endl;
         cout<<"Model: "<<(wsk+i)->model<<endl;
@@ -195,6 +200,7 @@ void wyswietl_cala_baze(strk *wsk,int rekordy)
         cout<<"Predkosc Maksymalna: "<<(wsk+i)->max_v<<endl;
         cout<<"Spalanie[L/100km]: "<<(wsk+i)->spalanie<<endl;
         cout<<"Pojemosc Silnika: "<<(wsk+i)->pojemnosc<<endl;
+        cout<<"Czy skasowany?: "<<(wsk+i)->kasowanie<<endl;
         cout<<"-----------------------"<<endl;
 
         }
@@ -243,6 +249,7 @@ void wczytywanie(fstream &plik, strk *wsk,const char *nazwa_pliku)  // FUNKCJA D
         plik>>(wsk+i)->max_v;
         plik>>(wsk+i)->spalanie;
         plik>>(wsk+i)->pojemnosc;
+        plik>>(wsk+i)->kasowanie;
         plik>>(wsk+i)->gwiazdka;
 
         }
@@ -461,7 +468,68 @@ case 6:
     }
 
 };
+void szukaj_wd_warunku(int wybor,strk *wsk)
+{
+        int a;
 
+        int rekordy=0,wiersze=1,znaki=0;
+        zliczanie(rekordy,wiersze,znaki);
+        int jakie_id[rekordy];
+
+    switch(wybor)
+    {
+    case 1:  //rocznik
+        cout<<"Podaj rok"<<endl;
+        cout<<"_>";cin>>a;
+        cout<<"1-Wieksze 2-Mniejsze 3-Rowne"<<endl;
+        cout<<"_>";cin>>wybor;
+        switch(wybor)
+        {
+     case 1:
+        break;
+     case 2:
+        break;
+     case 3:
+            break;
+     default:
+            break;
+        }
+        break;
+    case 2:  //pojemnosc
+        break;
+    case 3:  //spalanie
+        break;
+    case 4:  //max_predkosc
+        break;
+    default:
+        break;
+    }
+
+};
+void kasowanie(strk *wsk,int idd)
+{
+    int rekordy=0,wiersze=1,znaki;
+    zliczanie(rekordy,wiersze,znaki);
+
+    int i=0;
+    while(true)
+    {
+        if((wsk+i)->id==idd)
+        {
+            (wsk+i)->kasowanie=1;
+            break;
+        }
+        i++;
+    }
+
+};
+void zapisywanie(strk *wsk, fstream *plik)
+{
+    plik->open("baza.txt");
+    cout<<"Zapisywanie pliku...";
+
+    plik->close();
+};
 int main()
 {
     /////////////////////////////////////////////// bajery
@@ -508,42 +576,47 @@ int main()
                 break;
             case 2: //Wyswietl->szukaj wd danej
                 cout<<"Szukaj wedlug 1-Id 2-Marki 3-Modelu 4-Rocznika 5-Mocy 6-Koloru: ";
-                cin>>wybor;
+                cout<<"_>";cin>>wybor;
                 switch(wybor)
                 {
                 case 1:
-                    szukaj_wd_danej(1,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 case 2:
-                    szukaj_wd_danej(2,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 case 3:
-                    szukaj_wd_danej(3,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 case 4:
-                    szukaj_wd_danej(4,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 case 5:
-                    szukaj_wd_danej(5,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 case 6:
-                    szukaj_wd_danej(6,wsk);
+                    szukaj_wd_danej(wybor,wsk);
                     break;
                 default:
                     break;
                 }
                 break;
             case 3: //Wyswietl->szukaj wd warunku
-                cin>>wybor;
+                cout<<"1- 2- 3- 4-";
+                cout<<"_>";cin>>wybor;
                 switch(wybor)
                 {
                 case 1: //Wyswietl->szukaj wd warunku->rocznik
+                    szukaj_wd_warunku(wybor,wsk);
                     break;
                 case 2: //Wyswietl->szukaj wd warunku->pojemnosc
+                    szukaj_wd_warunku(wybor,wsk);
                     break;
                 case 3: //Wyswietl->szukaj wd warunku->spalanie
+                    szukaj_wd_warunku(wybor,wsk);
                     break;
                 case 4: //Wyswietl->szukaj wd warunku->max_predkosc
+                    szukaj_wd_warunku(wybor,wsk);
                     break;
                 default:
                     break;
@@ -555,7 +628,8 @@ int main()
             }
             break;
         case 2: // Edytuj
-            cin>>wybor;
+            cout<<"1-zapisz 2-Zmien wybrana dana 3-Kasuj rekord"<<endl;
+            cout<<"_>";cin>>wybor;
             switch(wybor)
             {
             case 1: //Edytuj->zapisz
@@ -563,6 +637,11 @@ int main()
             case 2: //Edytuj->zmien_wybrana_dana
                 break;
             case 3: //Edytuj->kasuj
+                int id;
+                cout<<"Wpisz id kasowanego rekordu: ";
+                cout<<"_>";cin>>id;
+
+                kasowanie(wsk,id);
                 break;
             case 4: //Edytuj->wczytaj
                 break;
